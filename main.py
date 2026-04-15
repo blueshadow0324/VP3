@@ -36,7 +36,7 @@ def home():
 
 if st.session_state.unlocked:
     if st.session_state.page == "home":
-        dashboard()
+        dashboard(user=st.ssession_state.user)
     if st.session_state.page == "bank":
         bank(user=st.session_state.user)
 
