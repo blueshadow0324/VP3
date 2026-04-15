@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 from dashboard import dashboard
+from bank import bank
 
 if "unlocked" not in st.session_state:
     st.session_state.unlocked = False
@@ -30,15 +31,8 @@ def login():
                   st.session_state.user = username
                   st.session_state.unlocked = True
 
-def bank():
-    st.text("Bank")
 def home():
     st.text(f"Hi, {st.session_state.user}!")
-    with st.form("BANK"):
-        reciver = st.text_input("Reciver:")
-        amount = st.number_input("Amount:")
-
-        
 
 if st.session_state.unlocked:
     if st.session_state.page == "home":
