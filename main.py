@@ -38,7 +38,7 @@ if st.session_state.unlocked:
     if st.session_state.page == "home":
         dashboard()
     if st.session_state.page == "bank":
-        bank()
+        bank(user=st.session_state.user)
 
 if not st.session_state.unlocked:
     login()

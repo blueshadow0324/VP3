@@ -9,7 +9,9 @@ with open("userCoins.json", "r") as f:
 
 user = st.session_state.user
 
-def bank():
+def bank(user="None"):
+    st.title("Bank")
+    st.text(f"Hello, {user}!")
     with st.form("BANK"):
         reciver = st.text_input("Reciver:")
         amount = st.number_input("Amount:")
