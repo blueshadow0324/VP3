@@ -19,8 +19,10 @@ def bank(user="None"):
         amount = st.number_input("Amount:")
         submit = st.form_submit_button("Send!")
         if submit:
-         userCoins[user] -= amount
-         userCoins[reciver] += amount
-
-         with open("userCoins.json", "w") as f:
-            json.dump(userCoins, f, indent=4)
+            if userCoins[user] > amount:
+              userCoins[user] -= amount
+              userCoins[reciver] += amount
+              with open("userCoins.json", "w") as f:
+                  json.dump(userCoins, f, indent=4)
+            else:
+                st.warning("You dont have enough coins!")

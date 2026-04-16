@@ -3,6 +3,7 @@ import json
 
 with open("userData.json", "r") as f:
     userData = json.load(f)
+
 with open("userCoins.json", "r") as f:
     userCoins = json.load(f)
 
