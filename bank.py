@@ -10,6 +10,8 @@ with open("userCoins.json", "r") as f:
 user = st.session_state.user
 
 def bank(user="None"):
+    with open("userCoins.json", "r") as f:
+        userCoins = json.load(f)
     coins = userCoins[user]
     st.title("Bank")
     st.text(f"Hello, {user}!")
