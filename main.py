@@ -1,7 +1,13 @@
 import streamlit as st
-import json
+from gamble import gamble
+from supabase import create_client
 from dashboard import dashboard
 from bank import bank
+
+# Supabase Setup
+url = "https://obcxepcywkmrcptxpwbq.supabase.co"
+key = "sb_publishable__9MoOR67yL294bkkMM--Zg_wc3JK9cf"
+db = create_client(url, key)
 
 if "unlocked" not in st.session_state:
     st.session_state.unlocked = False
@@ -10,58 +16,72 @@ if "user" not in st.session_state:
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
+
 def pageUpdate(page):
     st.session_state.page = page
 
-st.sidebar.title("Nav")
-st.sidebar.button("Bank", on_click=pageUpdate, args=("bank", ))
-st.sidebar.button("Home", on_click=pageUpdate, args=("home", ))
 
-with open("userData.json", "r") as f:
-    userData = json.load(f)
+st.sidebar.title("Nav")
+st.sidebar.button("Bank", on_click=pageUpdate, args=("bank",))
+st.sidebar.button("Home", on_click=pageUpdate, args=("home",))
+st.sidebar.button("Gamble", on_click=pageUpdate, args=("gamble", ))
+# Pull data from Supabase into dictionaries
+res = db.table("users").select("*").execute()
+userCoins = {row["username"]: row["coins"] for row in res.data}
+userData = {row["username"]: row["password"] for row in res.data}
+# Full row data for internal use if needed
+fullUserData = {row["username"]: row for row in res.data}
+
+
 def login():
     with st.form("FORM"):
         username = st.text_input("Username:")
-        password = st.text_input("Password:")
+        password = st.text_input("Password:", type="password")
 
         submit = st.form_submit_button("Login")
         if submit:
             if username in userData:
-              if password == userData[username]:
-                  st.session_state.user = username
-                  st.session_state.unlocked = True
-    st.button("Register", on_click=pageUpdate, args=("register", ))
+                if password == userData[username]:
+                    st.session_state.user = username
+                    st.session_state.unlocked = True
+                    st.rerun()
+    st.button("Register", on_click=pageUpdate, args=("register",))
+
+
 def register():
-    with open("userCoins.json", "r") as f:
-        coinsData = json.load(f)
     with st.form("REGI"):
         usernameINP = st.text_input("Username")
-        passwordINP = st.text_input("Password")
+        passwordINP = st.text_input("Password", type="password")
         submit = st.form_submit_button("Register")
-        print("D")
-        if submit:
-            print("subed")
-            userData[usernameINP] = passwordINP
-            coinsData[usernameINP] = 100
-            with open("userData.json", "w") as f:
-                json.dump(userData, f, indent=4)
-            with open("userCoins.json", "w") as f:
-                json.dump(coinsData, f, indent=4)
 
-            print(userData)
+        if submit:
+            # Insert into Supabase instead of writing to JSON
+            db.table("users").insert({
+                "username": usernameINP,
+                "password": passwordINP,
+                "coins": 100  # Default starting coins
+            }).execute()
+
+            st.success("Registered!")
             st.session_state.page = "login"
+            st.rerun()
+
 
 def home():
     st.text(f"Hi, {st.session_state.user}!")
+
 
 if st.session_state.unlocked:
     if st.session_state.page == "home":
         dashboard(user=st.session_state.user)
     if st.session_state.page == "bank":
         bank(user=st.session_state.user)
+    if st.session_state.page == "gamble":
+        gamble(user=st.session_state.user)
+
 if st.session_state.page == "register":
     register()
 
 if not st.session_state.unlocked:
     if not st.session_state.page == "register":
-      login()
+        login()
