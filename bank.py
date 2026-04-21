@@ -48,3 +48,4 @@ def bank(user="None"):
         deposit = st.form_submit_button("Deposit")
         withdraw = st.form_submit_button("Withdraw")
         if deposit:
+            print("")
