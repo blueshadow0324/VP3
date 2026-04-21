@@ -17,7 +17,7 @@ def bank(user="None"):
     res = db.table("users").select("*").execute()
     userCoins = {row["username"]: row["coins"] for row in res.data}
     userData = {row["username"]: row["password"] for row in res.data}
-    userBank = {row["username": row["bank"] for row in res.data]}
+    userBank = {row["username"]: row["bank"] for row in res.data}
     # Full row data for internal use if needed
     fullUserData = {row["username"]: row for row in res.data}
 
