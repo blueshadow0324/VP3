@@ -62,8 +62,8 @@ def register():
             db.table("users").insert({
                 "username": usernameINP,
                 "password": passwordINP,
-                "coins": 100  # Default starting coins
-                "bank"
+                "coins": 100,  # Default starting coins
+                "bank": 0
             }).execute()
 
             st.success("Registered!")
