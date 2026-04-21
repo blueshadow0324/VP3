@@ -53,7 +53,7 @@ def custom(user=None, coins=None):
 
 def customGamble(user, coins, amount, odds):
     if coins > amount:
-        odds = int(odds)
+        odds = round(odds)
 
         if odds != 1:
             integ = random.randint(1, odds)
