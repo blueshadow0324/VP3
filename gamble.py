@@ -10,6 +10,8 @@ url = "https://obcxepcywkmrcptxpwbq.supabase.co"
 key = "sb_publishable__9MoOR67yL294bkkMM--Zg_wc3JK9cf"
 db = create_client(url, key)
 
+def pageUpdater(page):
+    st.session_state.page = page
 
 def gamble(user=None):
     res = db.table("users").select("*").execute()
@@ -19,12 +21,12 @@ def gamble(user=None):
     st.text(f"Coins: {coins}")
     st.button("Gamble 5!", on_click=randomGamble, args=(user, coins))
     st.divider()
-    st.button("Custom gambling!", on_click=custom, args=(user, coins))
+    st.button("Custom gambling!", on_click=pageUpdater, args=("custom",))
 
 def randomGamble(user=None, coins=None):
     if coins > 5:
-        int = random.randint(1, 5)
-        if int == 5:
+        inte = random.randint(1, 5)
+        if inte == 5:
             coins += 25
             db.table("users") \
                 .update({"coins": coins}) \
@@ -37,22 +39,25 @@ def randomGamble(user=None, coins=None):
             st.warning("You lost 5!")
     else:
         st.warning("You dont have enough coins!")
+
+
 def custom(user=None, coins=None):
     res = db.table("users").select("*").execute()
     userCoins = {row["username"]: row["coins"] for row in res.data}
     coins = userCoins[user]
     st.title("Custom gambling")
     st.text(f"Coins: {coins}")
-    amount = st.number_input("Enter amount to gamble:")
+    amount2 = st.number_input("Enter amount to gamble:")
     odds = st.number_input("Gamble odds (ex 5, 10, 100):")
-    st.button("Custom gamble!", on_click=customGamble, args=(user, coins, amount, odds))
+    st.button("Custom gamble!", on_click=customGamble, args=(user, coins, amount2, odds))
 
 def customGamble(user, coins, amount, odds):
     if coins > amount:
-        int = random.randint(1, odds)
-        if int == 1:
+        odds = int(odds)
+        integ = random.randint(1, odds)
+        if integ == 1:
             coins += amount * odds
-            st.warning(f"you won {amount*odds}!")
+            st.warning(f"you won!")
         else:
             coins -= amount
             st.warning(f"You lost {amount}")

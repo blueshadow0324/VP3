@@ -42,3 +42,9 @@ def bank(user="None"):
                         .update({"coins": userCoins[reciver]}) .eq("username", reciver) .execute()
             else:
                 st.warning("You dont have enough coins!")
+    st.divider()
+    with st.form("ACC"):
+        coinsAmount = st.number_input("Coins:")
+        deposit = st.form_submit_button("Deposit")
+        withdraw = st.form_submit_button("Withdraw")
+        if deposit:

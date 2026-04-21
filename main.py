@@ -3,6 +3,7 @@ from gamble import gamble
 from supabase import create_client
 from dashboard import dashboard
 from bank import bank
+from gamble import custom
 
 # Supabase Setup
 url = "https://obcxepcywkmrcptxpwbq.supabase.co"
@@ -15,11 +16,13 @@ if "user" not in st.session_state:
     st.session_state.user = None
 if "page" not in st.session_state:
     st.session_state.page = "home"
-
+if "odds" not in st.session_state:
+    st.session_state.odds = None
+if "amount" not in st.session_state:
+    st.session_state.amount = None
 
 def pageUpdate(page):
     st.session_state.page = page
-
 
 st.sidebar.title("Nav")
 st.sidebar.button("Bank", on_click=pageUpdate, args=("bank",))
@@ -60,6 +63,7 @@ def register():
                 "username": usernameINP,
                 "password": passwordINP,
                 "coins": 100  # Default starting coins
+                "bank"
             }).execute()
 
             st.success("Registered!")
@@ -78,6 +82,8 @@ if st.session_state.unlocked:
         bank(user=st.session_state.user)
     if st.session_state.page == "gamble":
         gamble(user=st.session_state.user)
+    if st.session_state.page == "custom":
+        custom(user=st.session_state.user, coins=userCoins[st.session_state.user])
 
 if st.session_state.page == "register":
     register()
