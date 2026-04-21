@@ -56,7 +56,7 @@ def customGamble(user, coins, amount, odds):
         odds = round(odds)
 
         if odds != 1:
-            integ = random.randint(1, odds)
+            integ = random.randint(1, max(2, int(round(odds))))
 
             if integ == 1:
                 coins += amount * odds
