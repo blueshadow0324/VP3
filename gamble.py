@@ -59,11 +59,11 @@ def customGamble(user, coins, amount, odds):
             coins += amount * odds
             st.warning(f"You lost {amount * odds}!")
             db.table("users") \
-                .update({"coins": coins - 5}).eq("username", user).execute()
+                .update({"coins": coins).eq("username", user).execute()
         else:
             coins -= amount
             st.warning(f"You lost {amount}")
             db.table("users") \
-                .update({"coins": coins - 5}).eq("username", user).execute()
+                .update({"coins": coins}).eq("username", user).execute()
     else:
         st.warning("You dont have enough coins!")
