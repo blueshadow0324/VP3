@@ -17,6 +17,7 @@ def bank(user="None"):
     res = db.table("users").select("*").execute()
     userCoins = {row["username"]: row["coins"] for row in res.data}
     userData = {row["username"]: row["password"] for row in res.data}
+    userBank = {row["username": row["bank"] for row in res.data]}
     # Full row data for internal use if needed
     fullUserData = {row["username"]: row for row in res.data}
 
@@ -43,9 +44,20 @@ def bank(user="None"):
             else:
                 st.warning("You dont have enough coins!")
     st.divider()
+    bank = userBank[user]
+    st.text(f"Bank: {bank} coins")
+
     with st.form("ACC"):
         coinsAmount = st.number_input("Coins:")
         deposit = st.form_submit_button("Deposit")
         withdraw = st.form_submit_button("Withdraw")
         if deposit:
-            print("")
+            if coins ==> coinsAmount:
+                coins -= coinsAmount
+                bank += coinsAmount
+                st.warning(f"You have deposited: {coinsAmount}")
+        if withdraw:
+            if bank ==> coinsAmount:
+                coins += coinsAmount
+                bank -= coinsAmount
+                st.warning(f"You have withdrew: {coinsAmount}")
