@@ -57,9 +57,13 @@ def customGamble(user, coins, amount, odds):
         integ = random.randint(1, odds)
         if integ == 1:
             coins += amount * odds
-            st.warning(f"you won!")
+            st.warning(f"You lost {amount * odds}!")
+            db.table("users") \
+                .update({"coins": coins - 5}).eq("username", user).execute()
         else:
             coins -= amount
             st.warning(f"You lost {amount}")
+            db.table("users") \
+                .update({"coins": coins - 5}).eq("username", user).execute()
     else:
         st.warning("You dont have enough coins!")
