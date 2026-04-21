@@ -52,12 +52,12 @@ def bank(user="None"):
         deposit = st.form_submit_button("Deposit")
         withdraw = st.form_submit_button("Withdraw")
         if deposit:
-            if coins ==> coinsAmount:
+            if coins > coinsAmount:
                 coins -= coinsAmount
                 bank += coinsAmount
                 st.warning(f"You have deposited: {coinsAmount}")
         if withdraw:
-            if bank ==> coinsAmount:
+            if bank > coinsAmount:
                 coins += coinsAmount
                 bank -= coinsAmount
                 st.warning(f"You have withdrew: {coinsAmount}")
