@@ -47,8 +47,8 @@ def custom(user=None, coins=None):
     coins = userCoins[user]
     st.title("Custom gambling")
     st.text(f"Coins: {coins}")
-    amount2 = st.number_input("Enter amount to gamble:")
-    odds = st.number_input("Gamble odds (ex 5, 10, 100):")
+amount2 = st.number_input("Enter amount to gamble:", min_value=1, step=1)
+odds = st.number_input("Gamble odds (ex 5, 10, 100):", min_value=2, step=1)
     st.button("Custom gamble!", on_click=customGamble, args=(user, coins, amount2, odds))
 
 def customGamble(user, coins, amount, odds):
