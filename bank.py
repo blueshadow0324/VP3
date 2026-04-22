@@ -56,7 +56,7 @@ def bank(user="None"):
                 coins -= coinsAmount
                 bank += coinsAmount
                 st.warning(f"You have deposited: {coinsAmount}")
-                
+
         if withdraw:
             if bank > coinsAmount:
                 coins += coinsAmount

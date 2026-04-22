@@ -4,6 +4,25 @@ from supabase import create_client
 from dashboard import dashboard
 from bank import bank
 from gamble import custom
+import streamlit.components.v1 as components
+
+adsense_code = """
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4881378862565200"
+     crossorigin="anonymous"></script>
+
+<!-- Example ad unit -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4881378862565200"
+     data-ad-slot="YOUR_SLOT_ID"
+     data-ad-format="auto"></ins>
+
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+"""
+
+components.html(adsense_code, height=250)
 
 # Supabase Setup
 url = "https://obcxepcywkmrcptxpwbq.supabase.co"
