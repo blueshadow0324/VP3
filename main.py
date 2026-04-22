@@ -4,12 +4,13 @@ from supabase import create_client
 from dashboard import dashboard
 from bank import bank
 from gamble import custom
+import streamlit as st
 import streamlit.components.v1 as components
 
 components.html("""
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4881378862565200"
-crossorigin="anonymous"></script>
-""", height=0)
+     crossorigin="anonymous"></script>
+""", height=250)
 
 # Supabase Setup
 url = "https://obcxepcywkmrcptxpwbq.supabase.co"
