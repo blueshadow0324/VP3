@@ -58,12 +58,12 @@ def custom(user=None, coins=None):
 def customGamble(user, coins, amount, odds):
     if coins > amount:
 
-        if Nodds != 1:
-            integ = random.randint(1, Nodds)
+        if odds != 1:
+            integ = random.randint(1, odds)
 
             if integ == 1:
-                coins += amount * Nodds
-                st.warning(f"You won {amount * Nodds}!")  # fixed message
+                coins += amount * odds
+                st.warning(f"You won {amount * odds}!")  # fixed message
 
             else:
                 coins -= amount
