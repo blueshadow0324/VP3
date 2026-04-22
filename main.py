@@ -91,6 +91,7 @@ if st.session_state.unlocked:
         gamble(user=st.session_state.user)
     if st.session_state.page == "custom":
         custom(user=st.session_state.user, coins=userCoins[st.session_state.user])
+        
 
 if st.session_state.page == "register":
     register()
