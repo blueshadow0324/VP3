@@ -4,13 +4,17 @@ from supabase import create_client
 from dashboard import dashboard
 from bank import bank
 from gamble import custom
+from job import job
 import streamlit as st
 import streamlit.components.v1 as components
 
-components.html("""
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4881378862565200"
-     crossorigin="anonymous"></script>
-""", height=250)
+st.markdown(
+    """
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4881378862565200"
+         crossorigin="anonymous"></script>
+    """,
+    unsafe_allow_html=True,
+)
 
 # Supabase Setup
 url = "https://obcxepcywkmrcptxpwbq.supabase.co"
@@ -35,6 +39,8 @@ st.sidebar.title("Nav")
 st.sidebar.button("Bank", on_click=pageUpdate, args=("bank",))
 st.sidebar.button("Home", on_click=pageUpdate, args=("home",))
 st.sidebar.button("Gamble", on_click=pageUpdate, args=("gamble", ))
+st.sidebar.button("Job", on_click=pageUpdate, args=("job", ))
+
 # Pull data from Supabase into dictionaries
 res = db.table("users").select("*").execute()
 userCoins = {row["username"]: row["coins"] for row in res.data}
@@ -91,7 +97,9 @@ if st.session_state.unlocked:
         gamble(user=st.session_state.user)
     if st.session_state.page == "custom":
         custom(user=st.session_state.user, coins=userCoins[st.session_state.user])
-        
+    if st.session_state.page == "job":
+        job(user=st.session_state.user)
+
 
 if st.session_state.page == "register":
     register()

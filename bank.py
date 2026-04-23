@@ -45,6 +45,8 @@ def bank(user="None"):
                 st.warning("You dont have enough coins!")
     st.divider()
     bank = userBank[user]
+    if bank == None:
+        bank = 0
     st.text(f"Bank: {bank} coins")
 
     with st.form("ACC"):
@@ -56,9 +58,13 @@ def bank(user="None"):
                 coins -= coinsAmount
                 bank += coinsAmount
                 st.warning(f"You have deposited: {coinsAmount}")
+                db.table("users") \
+                    .update({"coins": coins, "bank": bank}).eq("username", user).execute()
 
         if withdraw:
             if bank > coinsAmount:
                 coins += coinsAmount
                 bank -= coinsAmount
                 st.warning(f"You have withdrew: {coinsAmount}")
+                db.table("users") \
+                    .update({"coins": coins, "bank": bank}).eq("username", user).execute()
