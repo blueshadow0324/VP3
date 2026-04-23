@@ -57,25 +57,24 @@ def custom(user=None, coins=None):
 
 def customGamble(user, coins, amount, odds):
     if coins > amount:
-
         if odds != 1:
-            integ = random.randint(1, odds)
+            if amount > 10000:
+                integ = random.randint(1, odds)
+                if integ == 1:
+                    coins += amount * odds
+                    st.warning(f"You won {amount * odds}!")  # fixed message
 
-            if integ == 1:
-                coins += amount * odds
-                st.warning(f"You won {amount * odds}!")  # fixed message
+                else:
+                    coins -= amount
+                    st.warning(f"You lost {amount}")
 
+                db.table("users") \
+                    .update({"coins": coins}) \
+                    .eq("username", user) \
+                    .execute()
             else:
-                coins -= amount
-                st.warning(f"You lost {amount}")
-
-            db.table("users") \
-                .update({"coins": coins}) \
-                .eq("username", user) \
-                .execute()
-
+                st.warning(f"You can't gamble more than {10000}")
         else:
             st.warning("You can't have 1 in odds!")
-
     else:
         st.warning("You don't have enough coins!")
