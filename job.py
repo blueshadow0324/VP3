@@ -6,6 +6,8 @@ key = "sb_publishable__9MoOR67yL294bkkMM--Zg_wc3JK9cf"
 db = create_client(url, key)
 
 def job(user):
+    st.title("Job")
+    st.text(f"Welcome user {user}")
     st.button("Click", on_click=gain, args=(user,))
 
 def gain(user):
