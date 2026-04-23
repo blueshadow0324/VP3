@@ -31,7 +31,7 @@ def bank(user="None"):
         amount = st.number_input("Amount:")
         submit = st.form_submit_button("Send!")
         if submit:
-            if amount > 0:
+            if amount >= 0:
                 if userCoins[user] > amount:
                     userCoins[user] -= amount
                     userCoins[reciver] += amount
@@ -54,7 +54,7 @@ def bank(user="None"):
         deposit = st.form_submit_button("Deposit")
         withdraw = st.form_submit_button("Withdraw")
         if deposit:
-            if coins > coinsAmount:
+            if coins >= coinsAmount:
                 coins -= coinsAmount
                 bank += coinsAmount
                 st.warning(f"You have deposited: {coinsAmount}")
@@ -62,7 +62,7 @@ def bank(user="None"):
                     .update({"coins": coins, "bank": bank}).eq("username", user).execute()
 
         if withdraw:
-            if bank > coinsAmount:
+            if bank >= coinsAmount:
                 coins += coinsAmount
                 bank -= coinsAmount
                 st.warning(f"You have withdrew: {coinsAmount}")

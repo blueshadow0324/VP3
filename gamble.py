@@ -10,6 +10,11 @@ url = "https://obcxepcywkmrcptxpwbq.supabase.co"
 key = "sb_publishable__9MoOR67yL294bkkMM--Zg_wc3JK9cf"
 db = create_client(url, key)
 
+res = db.table("users").select("*").execute()
+userCoins = {row["username"]: row["coins"] for row in res.data}
+rest = db.table("Casino").select("*").execute()
+
+
 def pageUpdater(page):
     st.session_state.page = page
 
@@ -58,7 +63,7 @@ def custom(user=None, coins=None):
 def customGamble(user, coins, amount, odds):
     if coins > amount:
         if odds != 1:
-            if amount < 10000:
+            if amount <= 10000:
                 integ = random.randint(1, odds)
                 if integ == 1:
                     coins += amount * odds
@@ -78,3 +83,17 @@ def customGamble(user, coins, amount, odds):
             st.warning("You can't have 1 in odds!")
     else:
         st.warning("You don't have enough coins!")
+
+def jackpotGUI(user, coins):
+    st.title("Jackpot")
+    st.text(f"Welcome {user}")
+    st.button("Bet", on_click=jackpot)
+def jackpot(user, coins):
+    pot = st.session_state.pot
+    randomINT = random.randint(1, 200)
+    if randomINT == 200:
+        st.warning(f"YOU WON THE JACPOT! {pot}")
+    else:
+        st.warning(f"You was {200-randomINT} from wining")
+        pot += 1000
+        coins -= 1000
