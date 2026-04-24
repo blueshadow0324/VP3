@@ -1,5 +1,7 @@
 import streamlit as st
 import json
+
+from streamlit.runtime.state import session_state
 from supabase import create_client
 import random
 
@@ -13,7 +15,7 @@ db = create_client(url, key)
 res = db.table("users").select("*").execute()
 userCoins = {row["username"]: row["coins"] for row in res.data}
 rest = db.table("Casino").select("*").execute()
-
+pot = {row["pot"] for row in rest.data}
 
 def pageUpdater(page):
     st.session_state.page = page
@@ -27,6 +29,7 @@ def gamble(user=None):
     st.button("Gamble 5!", on_click=randomGamble, args=(user, coins))
     st.divider()
     st.button("Custom gambling!", on_click=pageUpdater, args=("custom",))
+    st.button("Jackpot!", on_click=pageUpdater, args=("jackpot", ))
 
 def randomGamble(user=None, coins=None):
     if coins > 5:
@@ -85,15 +88,34 @@ def customGamble(user, coins, amount, odds):
         st.warning("You don't have enough coins!")
 
 def jackpotGUI(user, coins):
+    reste = db.table("Casino").select("*").execute()
+    print(reste.data)
+    pot = reste.data[0]["pot"]
     st.title("Jackpot")
     st.text(f"Welcome {user}")
-    st.button("Bet", on_click=jackpot)
-def jackpot(user, coins):
-    pot = st.session_state.pot
-    randomINT = random.randint(1, 200)
-    if randomINT == 200:
-        st.warning(f"YOU WON THE JACPOT! {pot}")
+    st.text(f"Coins: {coins}")
+    st.text(f"Pot: {pot}")
+    st.text(f"Odds: 1/200, Bet: 50KVP")
+    st.button("Bet", on_click=jackpot, args=(user, coins, pot, ))
+def jackpot(user, coins, pot):
+    if coins >= 50000:
+        randomINT = random.randint(1, 200)
+        if randomINT == 200:
+            st.warning(f"YOU WON THE JACPOT! {pot}")
+            coins += pot
+            pot = 0
+            db.table("users") \
+                .update({"coins": coins}).eq("username", user).execute()
+            db.table("Casino") \
+                .update({"pot": pot}).eq("username", user).execute()
+        else:
+            st.warning(f"You was {200 - randomINT} from the jackpot!")
+            pot = 50000 + pot
+            coins -= 50000
+            print(pot)
+            db.table("Casino") \
+                .update({"pot": pot}).eq("id", 1).execute()
+            db.table("users") \
+                .update({"coins": coins}).eq("username", user).execute()
     else:
-        st.warning(f"You was {200-randomINT} from wining")
-        pot += 1000
-        coins -= 1000
+        st.warning("You dont have enough for a ticket!")

@@ -1,12 +1,11 @@
-import streamlit as st
 from gamble import gamble
 from supabase import create_client
 from dashboard import dashboard
 from bank import bank
 from gamble import custom
 from job import job
+from gamble import jackpotGUI
 import streamlit as st
-import streamlit.components.v1 as components
 
 st.markdown(
     """
@@ -31,6 +30,8 @@ if "odds" not in st.session_state:
     st.session_state.odds = None
 if "amount" not in st.session_state:
     st.session_state.amount = None
+if "pot" not in st.session_state:
+    st.session_state.pot = 0
 
 def pageUpdate(page):
     st.session_state.page = page
@@ -99,6 +100,8 @@ if st.session_state.unlocked:
         custom(user=st.session_state.user, coins=userCoins[st.session_state.user])
     if st.session_state.page == "job":
         job(user=st.session_state.user)
+    if st.session_state.page == "jackpot":
+        jackpotGUI(user=st.session_state.user, coins=userCoins[st.session_state.user])
 
 
 if st.session_state.page == "register":
