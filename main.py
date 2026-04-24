@@ -6,6 +6,7 @@ from gamble import custom
 from job import job
 from gamble import jackpotGUI
 import streamlit as st
+import json
 
 st.markdown(
     """
