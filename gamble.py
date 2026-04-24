@@ -95,12 +95,12 @@ def jackpotGUI(user, coins):
     st.text(f"Welcome {user}")
     st.text(f"Coins: {coins}")
     st.text(f"Pot: {pot}")
-    st.text(f"Odds: 1/200, Bet: 50KVP")
+    st.text(f"Odds: 1/1000, Bet: 50KVP")
     st.button("Bet", on_click=jackpot, args=(user, coins, pot, ))
 def jackpot(user, coins, pot):
     if coins >= 50000:
-        randomINT = random.randint(1, 200)
-        if randomINT == 200:
+        randomINT = random.randint(1, 1000)
+        if randomINT == 1000:
             st.warning(f"YOU WON THE JACPOT! {pot}")
             coins += pot
             pot = 0
@@ -109,7 +109,7 @@ def jackpot(user, coins, pot):
             db.table("Casino") \
                 .update({"pot": pot}).eq("username", user).execute()
         else:
-            st.warning(f"You was {200 - randomINT} from the jackpot!")
+            st.warning(f"You was {1000 - randomINT} from the jackpot!")
             pot = 50000 + pot
             coins -= 50000
             print(pot)
