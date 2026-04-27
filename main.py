@@ -61,8 +61,15 @@ if xpLevel[user] is None:
 if not "level" in st.session_state:
     st.session_state.level = xpLevel[st.session_state.user]
 
+if not "level" in st.session_state:
+    st.session_state.level = xpLevel[st.session_state.user]
+
 with open("levels.json", "r") as f:
     levels = json.load(f)
+    
+if levels[st.session_state.level + 1] < xpShare[st.session.state.user]:
+    st.session_state.level += 1
+    xpShare[st.session_state.user] -= [st.session_state.level + 1
 
 if levels[st.session_state.level + 1] < xpShare[st.session_state.user]:
     st.session_state.level += 1
