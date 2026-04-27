@@ -52,7 +52,7 @@ userData = {row["username"]: row["password"] for row in res.data}
 # Full row data for internal use if needed
 fullUserData = {row["username"]: row for row in res.data}
 xpLevel = {row["username"]: row["xpLevel"] for row in res.data}
-xpShare = {row["username"]: row["xpShare§1"] for row in res.data}
+xpShare = {row["username"]: row["xpShare"] for row in res.data}
 
 if not "level" in st.session_state:
     st.session_state.level = None
@@ -103,6 +103,11 @@ def home():
         xpShare[st.session_state.user] -= [st.session_state.level + 1]
     if not "level" in st.session_state:
         st.session_state.level = 0
+    if not "share" in st.session_state:
+        st.session_state.share = 0
+    user = st.session_state.user
+    st.session_state.level = xpLevel[user]
+    st.session_state.share = xpShare[user]
     st.text(f"Level: {st.session_state.level}")
 
 
