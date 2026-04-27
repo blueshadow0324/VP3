@@ -52,6 +52,8 @@ def randomGamble(user=None, coins=None):
 def custom(user=None, coins=None):
     res = db.table("users").select("*").execute()
     userCoins = {row["username"]: row["coins"] for row in res.data}
+    levelShare = {row["username"]: row["xpShare"] for row in res.data}
+    share = levelShare[user]
     coins = userCoins[user]
     st.title("Custom gambling")
     st.text(f"Coins: {coins}")
@@ -61,16 +63,17 @@ def custom(user=None, coins=None):
         min_value=1,
         step=1
     )
-    st.button("Custom gamble!", on_click=customGamble, args=(user, coins, amount2, odds))
+    st.button("Custom gamble!", on_click=customGamble, args=(user, coins, amount2, odds, share))
 
-def customGamble(user, coins, amount, odds):
+def customGamble(user, coins, amount, odds, share):
     if coins > amount:
         if odds != 1:
             if amount <= 10000:
                 integ = random.randint(1, odds)
                 if integ == 1:
                     coins += amount * odds
-                    st.warning(f"You won {amount * odds}!")  # fixed message
+                    share += amount*(odds*odds)/10000
+                    st.warning(f"You won {amount * odds} and {amount*(odds*odds)/10000} XP!")  # fixed message
 
                 else:
                     coins -= amount
@@ -78,6 +81,7 @@ def customGamble(user, coins, amount, odds):
 
                 db.table("users") \
                     .update({"coins": coins}) \
+                    .update({"xpShare": share}) \
                     .eq("username", user) \
                     .execute()
             else:
@@ -98,16 +102,19 @@ def jackpotGUI(user, coins):
     st.text(f"Odds: 1/1000, Bet: 50KVP")
     st.button("Bet", on_click=jackpot, args=(user, coins, pot, ))
 def jackpot(user, coins, pot):
+    levelShare = {row["username"]: row["xpShare"] for row in res.data}
+    share = levelShare[user]
     if coins >= 50000:
         randomINT = random.randint(1, 1000)
         if randomINT == 1000:
             st.warning(f"YOU WON THE JACPOT! {pot}")
             coins += pot
+            share += 1000
             pot = 0
             db.table("users") \
-                .update({"coins": coins}).eq("username", user).execute()
+                .update({"coins": coins, "xpShare": share}).eq("username", user).execute()
             db.table("Casino") \
-                .update({"pot": pot}).eq("username", user).execute()
+                .update({"pot": pot}).eq("id", 1).execute()
         else:
             st.warning(f"You was {1000 - randomINT} from the jackpot!")
             pot = 50000 + pot

@@ -34,14 +34,16 @@ if "amount" not in st.session_state:
 if "pot" not in st.session_state:
     st.session_state.pot = 0
 
+
 def pageUpdate(page):
     st.session_state.page = page
+
 
 st.sidebar.title("Nav")
 st.sidebar.button("Bank", on_click=pageUpdate, args=("bank",))
 st.sidebar.button("Home", on_click=pageUpdate, args=("home",))
-st.sidebar.button("Gamble", on_click=pageUpdate, args=("gamble", ))
-st.sidebar.button("Job", on_click=pageUpdate, args=("job", ))
+st.sidebar.button("Gamble", on_click=pageUpdate, args=("gamble",))
+st.sidebar.button("Job", on_click=pageUpdate, args=("job",))
 
 # Pull data from Supabase into dictionaries
 res = db.table("users").select("*").execute()
@@ -51,9 +53,21 @@ userData = {row["username"]: row["password"] for row in res.data}
 fullUserData = {row["username"]: row for row in res.data}
 xpLevel = {row["username"]: row["xpLevel"] for row in res.data}
 xpShare = {row["username"]: row["xpLevel"] for row in res.data}
+user = st.session_state.user
+
+if xpLevel[user] is None:
+    xpLevel[user] = 0
+
+if not "level" in st.session_state:
+    st.session_state.level = xpLevel[st.session_state.user]
 
 with open("levels.json", "r") as f:
     levels = json.load(f)
+
+if levels[st.session_state.level + 1] < xpShare[st.session_state.user]:
+    st.session_state.level += 1
+    xpShare[st.session_state.user] -= [st.session_state.level + 1]
+
 
 def login():
     with st.form("FORM"):
@@ -107,7 +121,6 @@ if st.session_state.unlocked:
         job(user=st.session_state.user)
     if st.session_state.page == "jackpot":
         jackpotGUI(user=st.session_state.user, coins=userCoins[st.session_state.user])
-
 
 if st.session_state.page == "register":
     register()

@@ -18,14 +18,21 @@ def bank(user="None"):
     userCoins = {row["username"]: row["coins"] for row in res.data}
     userData = {row["username"]: row["password"] for row in res.data}
     userBank = {row["username"]: row["bank"] for row in res.data}
+    userLevels = {row["username"]: row["xpLevel"] for row in res.data}
+    userShare = {row["username"]: row["xpShare"] for row in res.data}
     # Full row data for internal use if needed
     fullUserData = {row["username"]: row for row in res.data}
 
     coins = userCoins[user]
+    level = userLevels[user]
+    share = userShare[user]
+    with open("levels.json", "r") as f:
+        levels = f.read()
 
     st.title("Bank")
     st.text(f"Hello, {user}!")
     st.text(f"Coins: {coins}")
+    st.text(f"Level: {level}, {share}/{levels}")
     with st.form("BANK"):
         reciver = st.text_input("Reciver:")
         amount = st.number_input("Amount:")
