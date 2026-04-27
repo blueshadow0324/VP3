@@ -52,7 +52,7 @@ userData = {row["username"]: row["password"] for row in res.data}
 # Full row data for internal use if needed
 fullUserData = {row["username"]: row for row in res.data}
 xpLevel = {row["username"]: row["xpLevel"] for row in res.data}
-xpShare = {row["username"]: row["xpLevel"] for row in res.data}
+xpShare = {row["username"]: row["xpShare§1"] for row in res.data}
 user = st.session_state.user
 
 if xpLevel[user] is None:
@@ -69,7 +69,7 @@ with open("levels.json", "r") as f:
     
 if levels[st.session_state.level + 1] < xpShare[st.session.state.user]:
     st.session_state.level += 1
-    xpShare[st.session_state.user] -= [st.session_state.level + 1
+    xpShare[st.session_state.user] -= [st.session_state.level + 1]
 
 if levels[st.session_state.level + 1] < xpShare[st.session_state.user]:
     st.session_state.level += 1
