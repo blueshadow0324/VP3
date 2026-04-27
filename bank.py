@@ -32,6 +32,11 @@ def bank(user="None"):
     st.title("Bank")
     st.text(f"Hello, {user}!")
     st.text(f"Coins: {coins}")
+    if levels[st.session_state.level + 1] < userShare[st.session_state.user]:
+        st.session_state.level += 1
+        userShare[st.session_state.user] -= [st.session_state.level + 1]
+        db.table("users") \
+            .update({"xpShare": share}).eq("username", user).execute()
     st.text(f"Level: {level}, {share}/{levels[str(level+1)]}")
     with st.form("BANK"):
         reciver = st.text_input("Reciver:")
