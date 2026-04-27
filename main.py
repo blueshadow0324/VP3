@@ -57,6 +57,10 @@ if not "level" in st.session_state:
 
 with open("levels.json", "r") as f:
     levels = json.load(f)
+    
+if levels[st.session_state.level + 1] < xpShare[st.session.state.user]:
+    st.session_state.level += 1
+    xpShare[st.session_state.user] -= [st.session_state.level + 1
 
 def login():
     with st.form("FORM"):
