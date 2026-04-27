@@ -52,6 +52,9 @@ fullUserData = {row["username"]: row for row in res.data}
 xpLevel = {row["username"]: row["xpLevel"] for row in res.data}
 xpShare = {row["username"]: row["xpLevel"] for row in res.data}
 
+if not "level" in st.session_state:
+    st.session_state.level = xpLevel[st.session_state.user]
+
 with open("levels.json", "r") as f:
     levels = json.load(f)
 
