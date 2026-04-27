@@ -80,8 +80,7 @@ def customGamble(user, coins, amount, odds, share):
                     st.warning(f"You lost {amount}")
 
                 db.table("users") \
-                    .update({"coins": coins}) \
-                    .update({"xpShare": share}) \
+                    .update({"coins": coins, "xpShare": share}) \
                     .eq("username", user) \
                     .execute()
             else:

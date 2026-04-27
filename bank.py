@@ -32,7 +32,7 @@ def bank(user="None"):
     st.title("Bank")
     st.text(f"Hello, {user}!")
     st.text(f"Coins: {coins}")
-    st.text(f"Level: {level}, {share}/{levels}")
+    st.text(f"Level: {level}, {share}/{levels[level+1]}")
     with st.form("BANK"):
         reciver = st.text_input("Reciver:")
         amount = st.number_input("Amount:")
