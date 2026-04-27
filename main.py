@@ -53,27 +53,12 @@ userData = {row["username"]: row["password"] for row in res.data}
 fullUserData = {row["username"]: row for row in res.data}
 xpLevel = {row["username"]: row["xpLevel"] for row in res.data}
 xpShare = {row["username"]: row["xpShare§1"] for row in res.data}
-user = st.session_state.user
-
-if xpLevel[user] is None:
-    xpLevel[user] = 0
 
 if not "level" in st.session_state:
-    st.session_state.level = xpLevel[st.session_state.user]
-
-if not "level" in st.session_state:
-    st.session_state.level = xpLevel[st.session_state.user]
+    st.session_state.level = None
 
 with open("levels.json", "r") as f:
     levels = json.load(f)
-    
-if levels[st.session_state.level + 1] < xpShare[st.session.state.user]:
-    st.session_state.level += 1
-    xpShare[st.session_state.user] -= [st.session_state.level + 1]
-
-if levels[st.session_state.level + 1] < xpShare[st.session_state.user]:
-    st.session_state.level += 1
-    xpShare[st.session_state.user] -= [st.session_state.level + 1]
 
 
 def login():
@@ -113,6 +98,12 @@ def register():
 
 def home():
     st.text(f"Hi, {st.session_state.user}!")
+    if levels[st.session_state.level + 1] < xpShare[st.session_state.user]:
+        st.session_state.level += 1
+        xpShare[st.session_state.user] -= [st.session_state.level + 1]
+    if not "level" in st.session_state:
+        st.session_state.level = 0
+    st.text(f"Level: {st.session_state.level}")
 
 
 if st.session_state.unlocked:
