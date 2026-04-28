@@ -32,6 +32,10 @@ def bank(user="None"):
     st.title("Bank")
     st.text(f"Hello, {user}!")
     st.text(f"Coins: {coins}")
+    print(userShare, userLevels)
+    st.session_state.level = userLevels[user]
+    if st.session_state.level == None:
+        st.session_state.level = 0
     nextLevel = userLevels[user] + 1
     if levels[str(nextLevel)] < userShare[st.session_state.user]:
         st.session_state.level += 1
